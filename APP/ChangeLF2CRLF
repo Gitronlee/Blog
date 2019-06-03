@@ -1,0 +1,41 @@
+```python
+#!/usr/bin/env python
+#coding:utf8
+import sys
+import os
+import os.path
+from tkinter import *
+import tkinter.messagebox
+
+def unix2dos(fname):
+    src_fobj = open(fname, 'a+', encoding='gbk', errors='ignore')
+    new_line = ""
+    src_fobj.seek(0)
+    for line in src_fobj:
+        new_line = new_line + line
+    src_fobj.seek(0)
+    src_fobj.truncate()
+    src_fobj.flush()
+    src_fobj.write(new_line)
+    src_fobj.close()
+
+def eachFile(filepath):
+    pathDir = os.listdir(filepath)      #获取当前路径下的文件名，返回List
+    for s in pathDir:
+        newDir=os.path.join(filepath,s)     #将文件命加入到当前文件路径后面
+        if os.path.isfile(newDir) :         #如果是文件
+            if os.path.splitext(newDir)[1] in [".c", ".cpp", ".h"]:  #判断是否是txt
+                unix2dos(newDir)                     #读文件
+        else:
+            eachFile(newDir)                #如果不是文件，递归这个文件夹的路径
+
+
+if __name__ == "__main__":
+    tkinter.Tk().withdraw()
+    tkinter.messagebox.showinfo('提示','大概在弄。。。')
+    eachFile(os.path.split(os.path.realpath(__file__))[0])
+    tkinter.Tk().withdraw()
+    tkinter.messagebox.showinfo('提示','大概是成功了吧!')
+
+
+```
